@@ -1,0 +1,5 @@
+environment    = "homologation"
+aws_account_id = "0123"
+aws_region     = "us-east-1"
+aws_role       = "s_terraform_admin_role"
+vpc_id         = "vpc-086a"

@@ -1,0 +1,5 @@
+environment    = "development"
+aws_account_id = "45678"
+aws_region     = "us-east-1"
+aws_role       = "s_terraform_admin_role"
+vpc_id         = "vpc-06bb"
