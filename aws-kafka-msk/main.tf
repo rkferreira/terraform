@@ -42,6 +42,7 @@ module "cluster-kafka" {
   number_of_broker_nodes = local.number_of_broker_nodes
   instance_type          = var.msk_instance_type
   ebs_volume_size        = var.msk_ebs_volume_size
+  disk_autoscale_max     = var.msk_ebs_volume_size_max
   enhanced_monitoring    = var.msk_enhanced_monitoring
   client_subnets         = local.subnet_ids
   sg_ingress             = length(var.msk_sg_ingress) != 0 ? var.msk_sg_ingress : local.default-msk_sg_ingress

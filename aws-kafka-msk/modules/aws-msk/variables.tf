@@ -46,6 +46,16 @@ variable "ebs_volume_size" {
   default = 100
 }
 
+variable "disk_autoscale_trigger" {
+  type    = number
+  default = 60
+}
+
+variable "disk_autoscale_max" {
+  type    = number
+  default = 200
+}
+
 variable "tags" {
   type = map(string)
 }

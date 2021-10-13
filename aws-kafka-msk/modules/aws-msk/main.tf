@@ -21,6 +21,32 @@ locals {
   msk_available_versions = ["2.6.0", "2.6.1", "2.6.2", "2.7.0", "2.7.1", "2.8.0"]
 }
 
+resource "aws_appautoscaling_target" "msk_disk_autoscale" {
+  max_capacity       = var.disk_autoscale_max
+  min_capacity       = 1
+  resource_id        = aws_msk_cluster.msk_cluster_kafka.arn
+  scalable_dimension = "kafka:broker-storage:VolumeSize"
+  service_namespace  = "kafka"
+}
+
+# https://docs.aws.amazon.com/msk/latest/developerguide/msk-autoexpand.html
+#
+resource "aws_appautoscaling_policy" "msk_disk_autoscale_policy" {
+  name               = "${var.cluster_name}-default"
+  policy_type        = "TargetTrackingScaling"
+  resource_id        = aws_msk_cluster.msk_cluster_kafka.arn
+  scalable_dimension = aws_appautoscaling_target.msk_disk_autoscale.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.msk_disk_autoscale.service_namespace
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "KafkaBrokerStorageUtilization"
+    }
+    target_value       = var.disk_autoscale_trigger
+    disable_scale_in   = true
+    scale_out_cooldown = 21600
+  }
+}
+
 resource "aws_security_group" "kafka-sg" {
   name        = "kafka-sg"
   description = "SG para kafka cluster"

@@ -82,6 +82,11 @@ variable "msk_ebs_volume_size" {
   default = "10"
 }
 
+variable "msk_ebs_volume_size_max" {
+  type    = number
+  default = 20
+}
+
 variable "msk_s3_bucket" {
   type    = string
   default = null
